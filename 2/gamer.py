@@ -18,22 +18,47 @@ while a:
     print(draws)
 
     game_over = False
-    for draw in draws:
-        if re.search("(\d+) red", draw) is not None:
-            if int(re.search("(\d+) red", draw).group(1)) > max_red: 
-                game_over = True
-                break
-        if re.search("(\d+) green", draw) is not None:
-            if int(re.search("(\d+) green", draw).group(1)) > max_green: 
-                game_over = True
-                break
-        if re.search("(\d+) blue", draw) is not None:
-            if int(re.search("(\d+) blue", draw).group(1)) > max_blue: 
-                game_over = True
-                break
+    game_max_red = 1
+    game_max_green = 1
+    game_max_blue = 1
 
-    if not game_over:
-        total += game
+    # for draw in draws:
+    #     if re.search("(\d+) red", draw) is not None:
+    #         if int(re.search("(\d+) red", draw).group(1)) > max_red: 
+    #             game_over = True
+    #             break
+    #     if re.search("(\d+) green", draw) is not None:
+    #         if int(re.search("(\d+) green", draw).group(1)) > max_green: 
+    #             game_over = True
+    #             break
+    #     if re.search("(\d+) blue", draw) is not None:
+    #         if int(re.search("(\d+) blue", draw).group(1)) > max_blue: 
+    #             game_over = True
+    #             break
+
+    ## problem 2
+    for draw in draws:
+        draw_red = re.search("(\d+) red", draw) 
+        if draw_red is not None:
+            draw_red = int(draw_red.group(1))
+            if draw_red > game_max_red: 
+                game_max_red = draw_red
+        draw_green = re.search("(\d+) green", draw) 
+        if draw_green is not None:
+            draw_green = int(draw_green.group(1))
+            if draw_green > game_max_green: 
+                game_max_green = draw_green
+        draw_blue = re.search("(\d+) blue", draw) 
+        if draw_blue is not None:
+            draw_blue = int(draw_blue.group(1))
+            if draw_blue > game_max_blue: 
+                game_max_blue = draw_blue
+
+
+    # if not game_over:
+    #     total += game
+    power = game_max_red * game_max_green * game_max_blue
+    total += power
 
     a = f.readline()
 
