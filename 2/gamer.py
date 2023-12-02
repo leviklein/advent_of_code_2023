@@ -1,4 +1,6 @@
 import re
+from functools import reduce
+from operator import mul
 
 def get_color_number(string, color):
     re_pattern = f"(\d+) {color}"
@@ -8,15 +10,21 @@ def get_color_number(string, color):
     else:
         return 0
 
+def check_colors_gameover(colors):
+    max = [12, 13, 14] # red, green, blue
+    for i in range(len(max)):
+        if colors[i] > max[i]:
+            return True   
+    return False
 
+def check_colors_return_max(draw_colors, max_colors):
+    for i in range(len(max_colors)):
+        if draw_colors[i] > max_colors[i]:
+            max_colors[i] = draw_colors[i]
+    return max_colors
 
 f = open("/home/leviklein/repo/advent_of_code_2023/2/input.txt", "r")
 a = f.readline()
-
-max_red = 12
-max_green = 13
-max_blue = 14
-
 
 total_powers = 0
 total_games = 0
@@ -29,47 +37,23 @@ while a:
     print(draws)
 
     game_over = False
-    game_max_red = 1
-    game_max_green = 1
-    game_max_blue = 1
+    max_colors = [1, 1, 1]
 
-    # for draw in draws:
-    #     draw_red = get_color_number(draw, "red")
-    #     if draw_red > max_red: 
-    #         game_over = True
-    #     draw_green = get_color_number(draw, "green")
-    #     if draw_green > max_green: 
-    #         game_over = True
-    #     draw_blue = get_color_number(draw, "blue")
-    #     if draw_blue > max_blue: 
-    #         game_over = True
-
-
-    ## problem 2
     for draw in draws:
         draw_red = get_color_number(draw, "red")
-        if draw_red > game_max_red: 
-            game_max_red = draw_red
-        if draw_red > max_red: 
-            game_over = True
-
         draw_green = get_color_number(draw, "green")
-        if draw_green > game_max_green: 
-            game_max_green = draw_green
-        if draw_green > max_green: 
-            game_over = True
-
         draw_blue = get_color_number(draw, "blue")
-        if draw_blue > game_max_blue: 
-            game_max_blue = draw_blue
-        if draw_blue > max_blue: 
-            game_over = True
+        draw_colors = [draw_red, draw_green, draw_blue]
 
+        max_colors = check_colors_return_max(draw_colors, max_colors)
+        if check_colors_gameover(draw_colors):
+            game_over = True
 
     if not game_over:
         total_games += game
 
-    power = game_max_red * game_max_green * game_max_blue
+    power = reduce((lambda x, y: x * y), max_colors)
+    power = reduce(mul, max_colors)
     total_powers += power
 
     a = f.readline()
