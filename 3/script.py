@@ -51,55 +51,30 @@ sum = 0
 from collections import namedtuple
 RECT_NAMEDTUPLE = namedtuple('RECT_NAMEDTUPLE', 'x1 y1 x2 y2')
 
-for number in numbers:
-    num = number[0]
-    row = number[1]
-    loc = number[2]
-
-    candidates = []
-    for symbol in symbols:
-        sym_row = symbol[1]
-        if sym_row >= row-1 and sym_row <= row+1:
-            candidates.append(symbol)
-
-    overlap = False
-    for candidate in candidates:
-        sym_row = candidate[1]
-        sym_loc = candidate[2]
-
-        sym_rectangle = RECT_NAMEDTUPLE(sym_loc[0]-1, sym_row-1, sym_loc[1], sym_row+1)
-        num_rectangle = RECT_NAMEDTUPLE(loc[0], row, loc[1]-1, row)
-
-        overlap = is_overlapping_2D(sym_rectangle, num_rectangle)
-        if overlap:
-           sum += num
-           break
-print(f"sum: {sum}")
-
 powers = 0
+sum = 0
 for symbol in symbols:
     sym_row = symbol[1]
     sym_loc = symbol[2]
 
-    candidates = []
+    overlaps = [] 
     for number in numbers:
         row = number[1]
-        if sym_row >= row-1 and sym_row <= row+1:
-            candidates.append(number)
-    
-    overlaps = [] 
-    for candidate in candidates:
-        num = candidate[0]
-        row = candidate[1]
-        loc = candidate[2]
+        if sym_row >= row-1 and sym_row <= row+1: #limit matches. unnecessary optimization
+            num = number[0]
+            row = number[1]
+            loc = number[2]
 
-        sym_rectangle = RECT_NAMEDTUPLE(sym_loc[0]-1, sym_row-1, sym_loc[1], sym_row+1)
-    
-        num_rectangle = RECT_NAMEDTUPLE(loc[0], row, loc[1]-1, row)
-        if is_overlapping_2D(sym_rectangle, num_rectangle):
-            overlaps.append(int(num))
+            sym_rectangle = RECT_NAMEDTUPLE(sym_loc[0]-1, sym_row-1, sym_loc[1], sym_row+1)
+            num_rectangle = RECT_NAMEDTUPLE(loc[0], row, loc[1]-1, row)
+            if is_overlapping_2D(sym_rectangle, num_rectangle):
+                sum += num
+                
+                if symbol[0] == "*":
+                    overlaps.append(num)
     
     if len(overlaps) == 2:
        powers += reduce(mul, overlaps)
 
+print(f"sum: {sum}")
 print(f"powers {powers}")
