@@ -46,13 +46,11 @@ while a:
     a = f.readline()
     row += 1
 
-sum = 0
-
 from collections import namedtuple
 RECT_NAMEDTUPLE = namedtuple('RECT_NAMEDTUPLE', 'x1 y1 x2 y2')
 
-powers = 0
 sum = 0
+powers = 0
 for symbol in symbols:
     sym_row = symbol[1]
     sym_loc = symbol[2]
