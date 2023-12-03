@@ -1,4 +1,6 @@
 import re
+from functools import reduce
+from operator import mul
 
 def overlap(rec1, rec2):
   if (rec2.x2 > rec1.x1 and rec2.x2 < rec1.x2) or \
@@ -31,7 +33,7 @@ def is_overlapping_2D(box1, box2):
     return is_overlapping_1D([box1[0],box1[2]],[box2[0],box2[2]]) and is_overlapping_1D([box1[1],box1[3]],[box2[1],box2[3]])
 
 
-f = open("/home/leviklein/repo/advent_of_code_2023/3/input.txt", "r")
+f = open("/home/leviklein/repo/advent_of_code_2023/3/test_input.txt", "r")
 a = f.readline()
 numbers = []
 symbols = []
@@ -50,6 +52,7 @@ while a:
         
     print(a)
     line_sym = re.finditer("([^\d.])", a) 
+    line_sym = re.finditer("(\*)", a) 
     for i in line_sym:
         if(len(i.groups())):
             print(i.groups())
@@ -101,3 +104,35 @@ for number in numbers:
            sum += int(num)
            break
 print(sum)
+
+powers = 0
+for symbol in symbols:
+    sym_row = symbol[1]
+    sym_loc = symbol[2]
+
+    candidates = []
+    for number in numbers:
+        row = number[1]
+        if sym_row >= row-1 and sym_row <= row+1:
+            candidates.append(number)
+    
+    overlaps = [] 
+    for candidate in candidates:
+        num = candidate[0]
+        row = candidate[1]
+        loc = candidate[2]
+        # sym_row = candidate[1]
+        # sym_loc = candidate[2]
+
+        sym_rectangle = RECT_NAMEDTUPLE(sym_loc[0]-1, sym_loc[1], sym_row-1, sym_row+1)
+    
+        num_rectangle = RECT_NAMEDTUPLE(loc[0], loc[1]-1, row, row)
+
+        is_overlap = is_overlapping_2D((sym_rectangle.x1, sym_rectangle.y1, sym_rectangle.x2, sym_rectangle.y2), (num_rectangle.x1, num_rectangle.y1, num_rectangle.x2, num_rectangle.y2))
+        if is_overlap:
+            overlaps.append(int(num))
+    
+    if len(overlaps) == 2:
+       powers += reduce(mul, overlaps)
+
+print(f"powers {powers}")
