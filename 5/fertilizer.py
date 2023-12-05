@@ -61,7 +61,7 @@ if __name__ == "__main__":
     a = f.read().split('\n')
 
     input = [ int(x) for x in re.findall("\d+", a[0]) ]
-    target_seeds = re.findall("\d+", a[0])
+    target_seeds = input
 
     row = 1
     while row < len(a):
@@ -69,14 +69,11 @@ if __name__ == "__main__":
             row = process_input(a, row+1)
         row+=1
 
-    location_seed = {}
+    lowest_seed_location = sys.maxsize
     for seed in target_seeds:
-        seed = int(seed)
         location = get_seed_location(seed)
-        location_seed[location] = seed
+        lowest_seed_location = location if location < lowest_seed_location else lowest_seed_location
 
-    
-    lowest_seed_location = next(iter(sorted(location_seed)))
     print(f"lowest_seed_location: {lowest_seed_location}")
 
     pass
