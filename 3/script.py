@@ -75,4 +75,4 @@ for symbol in symbols:
        powers += reduce(mul, overlaps)
 
 print(f"sum: {sum}")
-print(f"powers {powers}")
+print(f"power: {powers}")
