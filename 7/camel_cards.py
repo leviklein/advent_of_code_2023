@@ -6,10 +6,10 @@ from collections import Counter
 SUIT_ORDER = ['c', 'd', 'h', 's']
 rank_map = {
     "2": 0, "3": 1, "4": 2, "5": 3, "6": 4, "7": 5, "8": 6, "9": 7,
-    "T": 8, "J": 9, "Q": 10, "K": 11, "A": 12,
+    "T": 8, "J": -1, "Q": 10, "K": 11, "A": 12,
 }
 kind_map = { 
-    "5": 6, "4": 5, "fh": 4, "3": 3, "2p": 2, "1p": 1, "1": 0
+    "10": 6, "5": 6, "4": 5, "fh": 4, "3": 3, "2p": 2, "1p": 1, "1": 0
 }
 
 # from https://blog.boot.dev/computer-science/binary-search-tree-in-python/
@@ -100,8 +100,11 @@ class Hand:
         # return evaluate_cards(*cards)
 
         ## attempt 2
-        counts = sorted(list(Counter(self.hand).values()), reverse=True)
-        most = counts[0]
+        counter = Counter(self.hand)
+        counts = sorted(list(counter.values()), reverse=True)
+        top_2 = counter.most_common(2)
+        base = top_2[-1][1] if "J" in top_2[0] else counts[0]
+        most = base + counter['J']
         if most >= 4:
             return kind_map[str(most)]
         elif most == 3:
@@ -136,7 +139,7 @@ class Hand:
     # def __repr__(self):
     #     # display x and y instead of address
     #     # return f'Hand(val={self.val}, bid={self.bid})'
-    #     return self.val
+        # return self.hand
 
 if __name__ == "__main__":
     script_path = str(pathlib.Path(__file__).parent.resolve()) + "/"
