@@ -37,10 +37,12 @@ if __name__ == "__main__":
     a = f.readline()
 
     times = [ int(x) for x in re.findall("\d+", a) ]
+    pt2_time = int("".join(re.findall("\d+", a)))
 
     a = f.readline()
 
     distances = [ int(x) for x in re.findall("\d+", a) ]
+    pt2_distance = int("".join(re.findall("\d+", a)))
 
     for i in range(len(times)):
         INPUTS.append([times[i], distances[i]])
@@ -49,6 +51,8 @@ if __name__ == "__main__":
     for i in INPUTS:
         answer1.append(count_ints(get_times(i)))
     
-    print(answer1)
-    print(reduce(mul, answer1))
-    pass
+    print(f"part1: {reduce(mul, answer1)}")
+
+    ### soln 2
+    answer2 = count_ints(get_times([pt2_time, pt2_distance]))
+    print(f"part2: {answer2}")
