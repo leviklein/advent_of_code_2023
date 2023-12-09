@@ -23,9 +23,6 @@ def process_input(a):
         next_row = []
         for i in range(1, len(curr_row)):
             next_row.append(curr_row[i] - curr_row[i-1])
-        if not len(next_row):
-            print_list(triangle)
-            return 0
         triangle.append(next_row)
         if(all_zero(next_row)):
             break
