@@ -194,3 +194,13 @@ so mali siguro yung naenter ko na nagsabi na too low?
 10000000000000 - baka eto pala yung too low. makes sense kasi tignan mo o
 
 anyway, on to the next one. I won't even clean this up HAHAHAHAHA
+
+running tests* kasi di ako masyadong conviced
+876719999 yung multiplier using algo 3. try ko irun
+
+shet nag 0 nga. pota hahahahahhaa
+18215611419223 yung periodicity nung perfect thing
+36431222838446
+
+okay chapter closed na nga hahaha
+

@@ -327,7 +327,7 @@ if __name__ == "__main__":
     x = 20777
     t = dt.datetime.now()
 
-    i = 481301439091495400000
+    i = 876719990*2
     while True:
         t = dt.datetime.now() if print_every_n_seconds(t, 60, x*i) else t
         i += 1
