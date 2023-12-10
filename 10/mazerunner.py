@@ -46,8 +46,6 @@ if __name__ == "__main__":
         col = 0
     pass
 
-    # SQUARES = set(SQUARES)
-    print(SQUARES)
     maze = Maze(SQUARES)
     renderer = SVGRenderer()
     svg = renderer.render(maze)
