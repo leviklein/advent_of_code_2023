@@ -6,11 +6,11 @@ if __name__ == "__main__":
 
     f = open(script_path + "input.txt", "r")
     f = open(script_path + "test_input.txt", "r")
-    a = f.readline()
+    a = f.readline().strip()
 
     row = 1
     while a:
 
 
-        a = f.readline()
+        a = f.readline().strip()
         row += 1
