@@ -85,9 +85,9 @@ class SVGRenderer:
     def _draw_square(self, square: Square) -> str:
         top_left: Point = self._transform(square)
         tags = []
-        if square.role is Role.EXTERIOR:
+        if square.role == Role.EXTERIOR:
             tags.append(exterior(top_left, self.square_size, self.line_width))
-        elif square.role is Role.WALL:
+        elif square.role == Role.WALL:
             tags.append(wall(top_left, self.square_size, self.line_width))
         elif emoji := ROLE_EMOJI.get(square.role):
             tags.append(label(emoji, top_left, self.square_size // 2))

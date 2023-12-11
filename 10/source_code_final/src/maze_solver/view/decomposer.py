@@ -20,7 +20,7 @@ def decompose(border: Border, top_left: Point, square_size: int) -> Primitive:
     left = Line(top_left, bottom_left)
     right = Line(top_right, bottom_right)
 
-    if border is Border.LEFT | Border.TOP | Border.RIGHT | Border.BOTTOM:
+    if border == Border.LEFT | Border.TOP | Border.RIGHT | Border.BOTTOM:
         return Polygon(
             [
                 top_left,
@@ -30,7 +30,7 @@ def decompose(border: Border, top_left: Point, square_size: int) -> Primitive:
             ]
         )
 
-    if border is Border.BOTTOM | Border.LEFT | Border.TOP:
+    if border == Border.BOTTOM | Border.LEFT | Border.TOP:
         return Polyline(
             [
                 bottom_right,
@@ -40,7 +40,7 @@ def decompose(border: Border, top_left: Point, square_size: int) -> Primitive:
             ]
         )
 
-    if border is Border.LEFT | Border.TOP | Border.RIGHT:
+    if border == Border.LEFT | Border.TOP | Border.RIGHT:
         return Polyline(
             [
                 bottom_left,
@@ -50,7 +50,7 @@ def decompose(border: Border, top_left: Point, square_size: int) -> Primitive:
             ]
         )
 
-    if border is Border.TOP | Border.RIGHT | Border.BOTTOM:
+    if border == Border.TOP | Border.RIGHT | Border.BOTTOM:
         return Polyline(
             [
                 top_left,
@@ -60,7 +60,7 @@ def decompose(border: Border, top_left: Point, square_size: int) -> Primitive:
             ]
         )
 
-    if border is Border.RIGHT | Border.BOTTOM | Border.LEFT:
+    if border == Border.RIGHT | Border.BOTTOM | Border.LEFT:
         return Polyline(
             [
                 top_right,
@@ -70,7 +70,7 @@ def decompose(border: Border, top_left: Point, square_size: int) -> Primitive:
             ]
         )
 
-    if border is Border.LEFT | Border.TOP:
+    if border == Border.LEFT | Border.TOP:
         return Polyline(
             [
                 bottom_left,
@@ -79,7 +79,7 @@ def decompose(border: Border, top_left: Point, square_size: int) -> Primitive:
             ]
         )
 
-    if border is Border.TOP | Border.RIGHT:
+    if border == Border.TOP | Border.RIGHT:
         return Polyline(
             [
                 top_left,
@@ -88,7 +88,7 @@ def decompose(border: Border, top_left: Point, square_size: int) -> Primitive:
             ]
         )
 
-    if border is Border.BOTTOM | Border.LEFT:
+    if border == Border.BOTTOM | Border.LEFT:
         return Polyline(
             [
                 bottom_right,
@@ -97,7 +97,7 @@ def decompose(border: Border, top_left: Point, square_size: int) -> Primitive:
             ]
         )
 
-    if border is Border.RIGHT | Border.BOTTOM:
+    if border == Border.RIGHT | Border.BOTTOM:
         return Polyline(
             [
                 top_right,
@@ -106,22 +106,22 @@ def decompose(border: Border, top_left: Point, square_size: int) -> Primitive:
             ]
         )
 
-    if border is Border.LEFT | Border.RIGHT:
+    if border == Border.LEFT | Border.RIGHT:
         return DisjointLines([left, right])
 
-    if border is Border.TOP | Border.BOTTOM:
+    if border == Border.TOP | Border.BOTTOM:
         return DisjointLines([top, bottom])
 
-    if border is Border.TOP:
+    if border == Border.TOP:
         return top
 
-    if border is Border.RIGHT:
+    if border == Border.RIGHT:
         return right
 
-    if border is Border.BOTTOM:
+    if border == Border.BOTTOM:
         return bottom
 
-    if border is Border.LEFT:
+    if border == Border.LEFT:
         return left
 
     return NullPrimitive()

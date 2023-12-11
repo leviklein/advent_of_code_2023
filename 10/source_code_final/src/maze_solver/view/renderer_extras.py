@@ -78,11 +78,11 @@ class ExtendedSVGRenderer(SVGRenderer):
         rects = []
         for square in maze:
             top_left = self._transform(square)
-            if square.role is Role.EXTERIOR:
+            if square.role == Role.EXTERIOR:
                 rects.append(
                     exterior(top_left, self.square_size, self.line_width)
                 )
-            elif square.role is Role.WALL:
+            elif square.role == Role.WALL:
                 rects.append(wall(top_left, self.square_size, self.line_width))
         return "".join(rects)
 

@@ -22,5 +22,9 @@ class Border(IntFlag):
         return self.bit_count() == 3
 
     @property
+    def box(self) -> bool:
+        return self.bit_count() == 4
+
+    @property
     def intersection(self) -> bool:
         return self.bit_count() < 2

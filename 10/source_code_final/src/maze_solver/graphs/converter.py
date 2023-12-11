@@ -36,10 +36,21 @@ class Edge(NamedTuple):
                 return self.distance
 
 
-def make_graph(maze: Maze) -> nx.DiGraph:
-    return nx.DiGraph(
-        (edge.node1, edge.node2, {"weight": edge.weight()})
-        for edge in get_directed_edges(maze, get_nodes(maze))
+# def make_graph(maze: Maze) -> nx.DiGraph:
+#     return nx.DiGraph(
+#         (edge.node1, edge.node2, {"weight": edge.weight()})
+#         for edge in get_directed_edges(maze, get_nodes(maze))
+#     )
+
+# #original solution
+# def make_graph(maze: Maze) -> nx.Graph:
+#     return nx.Graph(get_edges(maze, get_nodes(maze)))
+
+# add distance as weights
+def make_graph(maze: Maze) -> nx.Graph:
+    return nx.Graph(
+        (edge.node1, edge.node2, {"weight": edge.distance})
+        for edge in get_edges(maze, get_nodes(maze))
     )
 
 
@@ -52,7 +63,7 @@ def get_nodes(maze: Maze) -> set[Node]:
     for square in maze:
         if square.role in (Role.EXTERIOR, Role.WALL):
             continue
-        if square.role is not Role.NONE:
+        if square.role != Role.NONE:
             nodes.add(square)
         if (
             square.border.intersection

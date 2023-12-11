@@ -11,8 +11,8 @@ class Solution:
     squares: tuple[Square, ...]
 
     def __post_init__(self) -> None:
-        assert self.squares[0].role is Role.ENTRANCE
-        assert self.squares[-1].role is Role.EXIT
+        assert self.squares[0].role == Role.ENTRANCE
+        assert self.squares[-1].role == Role.EXIT
         reduce(validate_corridor, self.squares)
 
     def __iter__(self) -> Iterator[Square]:

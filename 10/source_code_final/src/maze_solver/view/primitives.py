@@ -55,7 +55,7 @@ class DisjointLines(tuple[Line, ...]):
         return "".join(line.draw(**attributes) for line in self)
 
 
-@dataclass(frozen=True)
+@dataclass
 class Rect:
     top_left: Point | None = None
 
@@ -88,6 +88,6 @@ def tag(name: str, value: str | None = None, **attributes) -> str:
             for key, value in attributes.items()
         )
     )
-    if value is None:
+    if value == None:
         return f"<{name}{attrs} />"
     return f"<{name}{attrs}>{value}</{name}>"
