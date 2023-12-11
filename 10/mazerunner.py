@@ -1,4 +1,3 @@
-import re
 import pathlib
 from pathlib import Path
 from enum import Enum
@@ -22,7 +21,6 @@ class InputBorder(Enum):
     S = Border.EMPTY
 
 class InputRole(Enum):
-    A = Role.NONE
     G = Role.WALL # . now G for Ground
     S = Role.ENTRANCE
     P = Role.NONE
@@ -31,25 +29,18 @@ class InputRole(Enum):
     J = Role.NONE
     V = Role.NONE
     F = Role.NONE
+    DEFAULT = Role.NONE
 
     @classmethod
     def _missing_(cls, value):
-        return cls.A
+        return cls.DEFAULT
 
-    # @classmethod
-    # def __getitem__(self, name):
-    #     try:
-    #         return super().__getitem__(name)
-    #     except (ValueError, KeyError) as error:
-    #         return super().__getitem__('A')
 
 def print_list(list):
     for line in list:
         print(line)
 
 def find_max_list(list):
-    # return lengths(list)
-    # return max(list_len)
     max_length = 0
     max_i = 0
     for i in range(len(list)):
@@ -101,7 +92,6 @@ def fix_squares(width):
             MY_SQUARES[i.index] = new_square
 
 
-
 def render_maze(maze, solution=None):
     svg = SVGRenderer().render(maze, solution)
     file_loc = write_to_file("maze.svg", svg.xml_content)
@@ -132,7 +122,6 @@ if __name__ == "__main__":
             char = 'D' if char == '-' else char
             char = 'V' if char == '7' else char
             char = 'G' if char == '.' else char
-            # print(char)
             MY_SQUARES.append(Square(index, row, col, InputBorder[char].value, InputRole[char].value))
             index += 1
             col += 1
@@ -150,16 +139,10 @@ if __name__ == "__main__":
     G = make_graph(maze)
     print("graph created")
 
-    H = G.copy()
-    # H.remove_edges_from(nx.selfloop_edges(G))
     cycle_basis = nx.cycle_basis(G, root=maze.entrance)
     loops = [x for x in cycle_basis]
-    with Path("cycles.txt").open(mode="w", encoding="utf-8") as file:
-        for line in loops:
-            file.write(str(line))
-            file.write('\n')
+    write_to_file("cycles.txt", str(loops))
 
-    # print(maze.entrance)
     final_loops = []
     for loop in loops:
         if maze.entrance in loop:
@@ -167,8 +150,6 @@ if __name__ == "__main__":
 
     max_length, index = find_max_list(final_loops)
     solution = final_loops[index]
-    endpoint_index = int((len(solution)+1)/2)
-    # solution = solution[:6]
     solution = solution[-1:] + solution
     max_length = nx.path_weight(
                     G,
@@ -183,4 +164,20 @@ if __name__ == "__main__":
     write_to_file("solution.txt", str(solution))
 
 
+    ### part 2
+    from shapely.geometry import Point
+    from shapely.geometry.polygon import Polygon
 
+    ground_points = [ (x.row, x.column) for x in MY_SQUARES if x not in solution]
+    solution_points = [ (x.row, x.column) for x in solution ]
+    polygon = Polygon(solution_points)
+
+    inside = []
+    # for x in ground_points:
+    #     point = Point(x)
+    #     if polygon.contains(point):
+    #         inside.append(point)
+    # cooler writing below HAHAHA
+    inside = [x for x in ground_points if polygon.contains(Point(x))]
+
+    print(f"answer2: {len(inside)}")

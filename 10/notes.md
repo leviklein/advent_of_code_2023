@@ -28,6 +28,7 @@ okay nasolve ko na ata yung offending nodes.
 tried to run pero eto sagot
 max_length: 8627
 answer1: 4313.5 - tried 4134 pero too low pa rin
+
 hmm AHHH siguro dahil hindi counted yung empty spaces. nodes lang yun
 
 
@@ -38,3 +39,20 @@ answer1: 6830.5 - tried to submit 6831 pero too low pa rin hmmmmm
 
 
 6831 <- Tried this again PERO TAMA NA. WTF ANO BA YAN HAHAHAHHAHAHAHAHAHAH
+
+
+okay now is to find the numebr of points.
+una ko naisip was to create additional nodes in the graph pero daming information na mawawala dahil sa concept ng nodes and edges.
+so naisip ko yung solution ng "points inside a wall"
+try ko ngayon.
+
+sample input ay nasa test_input
+points inside:
+(4,7)
+points outside
+(4,4)
+
+okay gumana!!! kinabahan ako kasi hindi immediate yung result sa test input pero woo buti na lang gumana
+
+output:
+305
