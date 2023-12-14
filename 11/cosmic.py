@@ -7,6 +7,7 @@ from itertools import product, combinations
 from functools import cached_property, reduce
 from typing import Iterator
 import sys
+import time
 
 from multiprocessing import Pool
 
@@ -183,28 +184,31 @@ def print_every_n_seconds(t, seconds, line):
     return delta.seconds >= seconds
 t = dt.datetime.now()
 
-def get_shortest_path_with_passing_g(g, star_pair):
-    return nx.shortest_path(g, source=star_start, target=star_end)
+def get_shortest_path_with_copying_g(star_pair):
+    return len(nx.shortest_path(G, source=star_pair[0], target=star_pair[1])) - 1
 
 if __name__ == "__main__":
     script_path = Path(__file__).parent
     f = open(script_path/"input.txt", "r")
-    # f = open(script_path/"test_input.txt", "r")
+    f = open(script_path/"test_input.txt", "r")
     a = [x.strip() for x in f.readlines()]
     width = len(a[0])
+
+    IS_PART2 = True
+    num_to_add = 1 if not IS_PART2 else 999999
 
     x_to_double = [x for x in range(len(a)) if all_equal(a[x], '.')]
     y_to_double = [y for y in range(len(a[0])) if all_equal(list(zip(*a))[y])]
 
     for x in x_to_double:
-        a.insert(x + x_to_double.index(x), '.'*width)
+        for tmp in range(num_to_add):
+            a.insert(x + x_to_double.index(x), '.'*width)
 
     length = len(a)
-    # tmp = list(zip(*a))
     for y in y_to_double:
-        for x in range(len(a)):
+        for x in range(length):
             position = y + y_to_double.index(y)
-            line = '{0}.{1}'.format(a[x][:position], a[x][position:])
+            line = '{0}{2}{1}'.format(a[x][:position], a[x][position:], '.'*(num_to_add))
             a[x] = line
 
     grid = a
@@ -234,16 +238,31 @@ if __name__ == "__main__":
     left = len(star_pairs)
     print(f"computing shortest paths. {left} remaining")
     answer1 = 0
-    for star_start, star_end in star_pairs:
-        t = dt.datetime.now() if print_every_n_seconds(t, 5, f" computing shortest path between {star_start.index} and {star_end.index}. {left} remaining") else t
+    # for star_start, star_end in star_pairs:
+    #     t = dt.datetime.now() if print_every_n_seconds(t, 5, f" computing shortest path between {star_start.index} and {star_end.index}. {left} remaining") else t
 
-        paths.append(nx.shortest_path(G, source=star_start, target=star_end))
+    #     paths.append(nx.shortest_path(G, source=star_start, target=star_end))
 
-        left -= 1
-        answer1 += len(paths[-1]) -1
+    #     left -= 1
+    #     answer1 += len(paths[-1]) -1
 
+    # ### with fxn
+    # for i in star_pairs:
+    #     paths.append(get_shortest_path_with_copying_g(i))
 
+    #     left -= 1
+    #     answer1 += len(paths[-1]) -1
 
+    ### with multiprocessing
+    start_t = time.perf_counter()
+    with Pool() as pool:
+        for res in pool.imap_unordered(get_shortest_path_with_copying_g, star_pairs, 100):
+            answer1 += res
+            t = dt.datetime.now() if print_every_n_seconds(t, 5, f" computing shortest path. {left} remaining") else t
+            left -= 1
+    end_t = time.perf_counter()
+    duration = end_t - start_t
+    print(f"it took: {duration:.4f}s")
 
     # answer1 = reduce(lambda a, b: a + b, [len(x)-1 for x in paths])
     print(f"answer1: {answer1}")
