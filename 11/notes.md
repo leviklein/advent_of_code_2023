@@ -51,3 +51,6 @@ NEED MO LANG YUNG COMPUTE YUNG DIFFERENCE IN INDICES DEPOTA HAHAHAHAHAHAHAHAHAHA
 
 
 okay 14/12/2023, gagwin ko na ulit
+
+okay EZ hahaha tangina mo jepoy dizon
+you had me in the first half, not gonna lie
