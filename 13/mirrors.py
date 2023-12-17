@@ -33,41 +33,87 @@ def fractionToDecimal(numr, denr):
         return res[mp[rem]:]
 
 def find_reflection(pattern):
-    tmp = {}
+    candidate_to_del = []
+    candidates = {}
+    traversed = []
+    symmetries = []
     reflection_count = 0
     reflection_beginning = -1
     x_reflection = False
+    center = [len(pattern) // 2]
+    if len(pattern) % 2:
+        center.insert(0, center[0]-1)
+                
     for x in range(len(pattern)):
-        if (pattern[x] in tmp):
-            if not x_reflection:
-                reflection_beginning = x
-                x_reflection = True
-                reflection_count = x-1
+        #check_candidates 
+        candidate_to_del = []
+        for k,v in candidates.items():
+            idx = k
+            distance = v["distance"]
+            remaining = v["remaining"]
+            if pattern[x] == traversed[:idx][idx-x-1]:
+                remaining = remaining - 1
+                if remaining == 0:
+                    symmetries.append((idx, distance))
+                    candidate_to_del.append(idx)
+                else:
+                    candidates[idx] = {"distance": distance,"remaining": remaining}
             else:
-                if tmp[pattern[x]] == reflection_count-1:
-                    reflection_count -= 1
-                    pass
+                candidate_to_del.append(idx)
+        [ candidates.pop(x) for x in candidate_to_del ]
+
+
+        if traversed:
+            if pattern[x] == traversed[x-1]:
+                distance = abs(x - center[0])
+                remaining = x - 1 
+                if remaining == 0:
+                    symmetries.append((x, distance))
+                    candidate_to_del.append(x)
                 else:
-                    x_reflection = False
-                    reflection_beginning = -1
-                    reflection_count = 0
-                    # break
-        else:
-            if x_reflection:
-                if reflection_count > 0:
-                    x_reflection = False
-                    reflection_beginning = -1
-                    reflection_count = 0
-                    # break
-                else:
-                    break
-            tmp[pattern[x]] = x
-            reflection_count += 1
-    if x_reflection:
-        return reflection_beginning
-    else:
-        return 0
-    return reflection_beginning if  x_reflection else 0
+                    candidates[x] = {"distance": distance,"remaining": x-1}
+
+        traversed.append(pattern[x])
+
+    for k,v in candidates.items():
+        symmetries.append((k,v["distance"]))
+
+
+
+    if(symmetries):
+        minval = min(symmetries, key=lambda x: x[1])[1]
+        minimums = [x for x in symmetries if x[1] == minval]
+    return minimums[0][0] if symmetries else 0
+
+    #         if (pattern[x] in tmp):
+    #             if not x_reflection:
+    #                 reflection_beginning = x
+    #                 x_reflection = True
+    #                 reflection_count = x-1
+    #             else:
+    #                 if tmp[pattern[x]] == reflection_count-1:
+    #                     reflection_count -= 1
+    #                     pass
+    #                 else:
+    #                     x_reflection = False
+    #                     reflection_beginning = -1
+    #                     reflection_count = 0
+    #                     # break
+    #         else:
+    #             if x_reflection:
+    #                 if reflection_count > 0:
+    #                     x_reflection = False
+    #                     reflection_beginning = -1
+    #                     reflection_count = 0
+    #                     # break
+    #                 else:
+    #                     break
+    #             tmp[pattern[x]] = x
+    #             reflection_count += 1
+    # if x_reflection:
+    #     return reflection_beginning
+    # else:
+    #     return 0
 
 def process_pattern(pattern):
     answer = 0

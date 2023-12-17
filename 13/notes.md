@@ -13,3 +13,11 @@ okay concept is similar sa ginawa ko before na insert tapos pag nakita return yu
 
 4th attempt:
 20072 -- add early exit condition if count < reflections
+
+
+5th attempt:
+27664
+
+okay tama na
+tangina hahahaha
+smudging naman
